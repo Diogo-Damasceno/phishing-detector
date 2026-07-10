@@ -9,7 +9,7 @@ description = "Detector de phishing por análise heurística de URLs, com pontua
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Diogo Damasceno", email = "dev.diogodamasceno@gmail.com" }]
+authors = [{ name = "Diogo Damasceno", email = "mitszukyo@gmail.com" }]
 keywords = ["security", "phishing", "url", "detection", "cybersecurity"]
 dependencies = []
 
