@@ -1,64 +1,46 @@
-# Phishing Detector 🎣
+# phishing-detector
 
-Analisa uma **URL** e produz uma **pontuação de risco (0–100)** com base em heurísticas de phishing — sem depender de listas negras externas. Funciona totalmente offline, com checagens de rede (SSL) opcionais.
+Analisa uma **URL** e produz uma **pontuação de risco (0–100)** com base em
+heurísticas de phishing — sem depender de listas negras externas. Funciona
+totalmente offline, com checagens de rede (SSL) opcionais.
 
-> ⚠️ Ferramenta educacional/defensiva. Um score baixo **não garante** que um site é seguro; um score alto indica sinais suspeitos que merecem atenção.
-
-## Heurísticas avaliadas
-
-| Sinal | Descrição |
-|-------|-----------|
-| `no_https` | URL sem TLS |
-| `ip_as_host` | IP em vez de domínio |
-| `at_symbol` | `@` no netloc (ofuscação) |
-| `many_subdomains` | excesso de rótulos |
-| `punycode` | domínio homógrafo (`xn--`) |
-| `suspicious_tld` | TLD abusado (.tk, .xyz, .zip…) |
-| `url_shortener` | encurtador de URL |
-| `brand_in_subdomain` | marca fora do domínio registrável |
-| `typosquatting` | domínio parecido com marca conhecida |
-| `sensitive_words` | login/verify/secure/senha… |
-| `long_url` | URL muito longa |
-| `high_entropy` | domínio gerado automaticamente |
-| `ssl_error` / `expired_cert` | (com `--network`) |
+> ⚠️ Ferramenta educacional/defensiva. Um score baixo **não garante** que um site
+> é seguro; um score alto indica sinais suspeitos que merecem atenção.
 
 ## Instalação
+
+Pré-requisitos: **Python 3.10+**.
 
 ```bash
 git clone https://github.com/Diogo-Damasceno/phishing-detector.git
 cd phishing-detector
+python3 -m venv .venv
+. .venv/bin/activate
 pip install -e .
 ```
+
+Após instalar, o comando do projeto fica disponível dentro do venv.
+Para usar fora dele, crie um atalho:
+
+```bash
+mkdir -p ~/.local/bin
+ln -sf "$(pwd)/.venv/bin/phishdet" ~/.local/bin/phishdet
+```
+
+> Dica: se `~/.local/bin` não estiver no teu `PATH`, rode
+> `export PATH="$HOME/.local/bin:$PATH"` (e adicione ao `~/.bashrc`/`~/.zshrc`).
+
 
 ## Uso
 
 ```bash
-phishdet https://www.google.com
-phishdet "http://paypal.secure-login.xyz/account"
-phishdet --network https://exemplo.com     # inclui checagem de SSL
-phishdet --json "http://paypa1.com"          # saída JSON
-```
+# analisa uma URL (offline)
+phishdet "http://exemplo-login.xyz/secure"
 
-### Exemplo
-
-```
-URL:     http://paypal.secure-login.xyz/account
-Domínio: paypal.secure-login.xyz
-Score:   46/100 — RISCO MÉDIO
-
-Sinais detectados:
-  [+22] brand_in_subdomain: Marca 'paypal' fora do domínio registrável (secure-login.xyz)
-  [+15] no_https: URL não usa HTTPS
-  [+12] suspicious_tld: TLD frequentemente abusado: .xyz
-```
-
-## Testes
-
-```bash
-pip install -e '.[dev]'
-pytest -q
+# com checagem de rede (certificado SSL) e saida JSON
+phishdet "https://site.com" --network --json
 ```
 
 ## Licença
 
-MIT
+MIT — veja `LICENSE`.
